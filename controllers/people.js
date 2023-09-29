@@ -3,7 +3,7 @@ const readPeople = async (req, res) => {
   // res.json({ success: true, data: people });
   try {
     let answer = await Person.find({});
-    return answer;
+    res.json(answer);
   } catch (err) {}
 };
 let id = 0;

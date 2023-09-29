@@ -12,7 +12,7 @@ const fetchPeople = async () => {
     const data = await axios.get('/api/people');
     console.log(data);
     const people = data.data.map((person) => {
-      return `<div class="divy"><h5 class = "names"> ${person.name} </h5><h3>${person.description}</h3><button class="edit" data-id="${person.id}">Edit</button><button class="delete1" data-id="${person.id}">Delete</button><p style="display:flex; text-align:center">Done:<input type="checkbox" class="check" id="${person.id}" name="${person.id}" ></p></div>`;
+      return `<div class="divy"><h5 class = "names"> ${person.name} </h5><h3>${person.description}</h3><button class="edit" data-id="${person.userId}">Edit</button><button class="delete1" data-id="${person.userId}">Delete</button><p style="display:flex; text-align:center">Done:<input type="checkbox" class="check" id="${person.userId}" name="${person.userId}" ></p></div>`;
     });
     result.innerHTML = people.join('');
     const edit = document.querySelectorAll('.edit');
@@ -20,9 +20,9 @@ const fetchPeople = async () => {
       element.addEventListener('click', async (e) => {
         e.preventDefault();
         try {
-          const { data } = await axios.get('/api/people');
+          const data = await axios.get('/api/people');
           name2 = data.data.filter(
-            (x) => x.id == Number(element.getAttribute('data-id'))
+            (x) => x.userId == Number(element.getAttribute('data-id'))
           );
           input.value = name2[0].name;
           input2.value = name2[0].description;
@@ -79,9 +79,7 @@ const fetchPeople = async () => {
         e.preventDefault();
 
         try {
-          const { data } = await axios.delete(
-            '/api/people/' + element.getAttribute('data-id')
-          );
+          await axios.delete('/api/people/' + element.getAttribute('data-id'));
           fetchPeople();
         } catch (error) {
           formAlert.textContent = error.response.data.msg;
@@ -90,7 +88,6 @@ const fetchPeople = async () => {
     });
   } catch (error) {
     console.log(error);
-    formAlert.textContent = error.response.data.msg;
   }
 };
 fetchPeople();
