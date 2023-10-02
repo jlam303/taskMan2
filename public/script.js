@@ -3,8 +3,6 @@ const input = document.querySelector('.form-input');
 const input2 = document.querySelector('.form-input2');
 
 const btn = document.querySelector('.submit-btn');
-let x = false;
-let editId = -1;
 let name2;
 const formAlert = document.querySelector('.form-alert');
 const fetchPeople = async () => {
@@ -12,7 +10,7 @@ const fetchPeople = async () => {
     const data = await axios.get('/api/people');
     console.log(data);
     const people = data.data.map((person) => {
-      return `<div class="divy"><h5 class = "names"> ${person.name} </h5><h3>${person.description}</h3><button class="edit" data-id="${person.userId}">Edit</button><button class="delete1" data-id="${person.userId}">Delete</button><p style="display:flex; text-align:center">Done:<input type="checkbox" class="check" id="${person.userId}" name="${person.userId}" ></p></div>`;
+      return `<div class="divy"><h5 class = "names"> ${person.name} </h5> <h3>Age: ${person.age}</h3><button class="edit" data-id="${person.userId}">Edit</button><button class="delete1" data-id="${person.userId}">Delete</button><p style="display:flex; text-align:center">Done:<input type="checkbox" class="check" id="${person.userId}" name="${person.userId}" ></p></div>`;
     });
     result.innerHTML = people.join('');
     const edit = document.querySelectorAll('.edit');
@@ -24,11 +22,8 @@ const fetchPeople = async () => {
           name2 = data.data.filter(
             (x) => x.userId == Number(element.getAttribute('data-id'))
           );
-          input.value = name2[0].name;
-          input2.value = name2[0].description;
-
-          editId = element.getAttribute('data-id');
-          x = true;
+          sessionStorage.setItem('name', name2[0].name);
+          sessionStorage.setItem('name', name2[0].age);
           fetchPeople();
         } catch (error) {}
       });
@@ -95,26 +90,19 @@ fetchPeople();
 btn.addEventListener('click', async (e) => {
   e.preventDefault();
   const nameValue = input.value;
-  const descValue = input2.value;
+  const age = input2.value;
   try {
-    if (x) {
-      x = false;
-      await axios.put('/api/people/' + editId, {
-        name: nameValue,
-        description: descValue,
-      });
-    } else {
-      const { data } = await axios.post('/api/people', {
-        name: nameValue,
-        description: descValue,
-      });
-      const h5 = document.createElement('h5');
-      h5.textContent = data.person;
-      result.appendChild(h5);
-      const h6 = document.createElement('h3');
-      h6.textContent = data.description;
-      result.appendChild(h6);
-    }
+    const person = await axios.post('/api/people', {
+      name: nameValue,
+      age: age,
+    });
+    const h5 = document.createElement('h5');
+    h5.textContent = person.person;
+    result.appendChild(h5);
+    const h6 = document.createElement('h3');
+    h6.textContent = person.age;
+    result.appendChild(h6);
+
     fetchPeople();
   } catch (error) {
     formAlert.textContent = error;

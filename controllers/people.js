@@ -22,36 +22,42 @@ const createPeople = async (req, res) => {
   res.status(202).json(newPerson);
 };
 
-const updatePeople = (req, res) => {
-  const { id } = req.params;
-  const { name } = req.body;
-  const person = people.find((person) => {
-    return person.id === Number(id);
-  });
-  if (!person) {
-    return express.json({ success: false, data: [] });
-  }
-  const newPeople = people.map((person) => {
-    if (person.id === Number(id)) {
-      person.name = name;
+const updatePeople = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, age } = req.body;
+    let answer = await Person.find({});
+    const answer2 = answer.find((person) => {
+      return person.userId === Number(id);
+    });
+    if (!answer2) {
+      return express.json({ success: false, data: [] });
     }
-    return person;
-  });
-  res.status(202).json({ data: newPeople, success: true });
+    const newPeople = await Person.findByIdAndUpdate(
+      { _id: answer2._id },
+      { name: name, age: age }
+    );
+    res.status(202).json({ data: newPeople, success: true });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-const deletePerson = (req, res) => {
-  const { id } = req.params;
-  const person = people.find((person) => {
-    return person.id === Number(id);
-  });
-  if (!person) {
-    return res.status(404).json({ success: false, msg: 'e' });
+const deletePerson = async (req, res) => {
+  try {
+    const { id } = req.params;
+    let answer = await Person.find({});
+    const answer2 = answer.find((person) => {
+      return person.userId === Number(id);
+    });
+    if (!answer2) {
+      return express.json({ success: false, data: [] });
+    }
+    const newPeople = await Person.findByIdAndDelete({ _id: answer2._id });
+    res.status(202).json({ data: newPeople, success: true });
+  } catch (err) {
+    console.log(err);
   }
-  people = people.filter((person) => {
-    return person.id != Number(id);
-  });
-  res.status(202).json({ data: people, success: true });
 };
 
 module.exports = { readPeople, createPeople, updatePeople, deletePerson };

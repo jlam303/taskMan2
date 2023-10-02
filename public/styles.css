@@ -11,12 +11,15 @@
 .divy{
   margin-left:2.5rem;
   margin-right: 2.5rem;
+  margin-bottom: 2.5rem;
   display: flex;
   flex-direction: column;
-  width: 10rem;
-  height: 15rem;
+  width: 14rem;
+  height: 17rem;
   justify-items: center;
-  
+  background-color: white;
+  padding: 2rem;
+  box-shadow: rgba(0, 0, 0, 0.1) .3rem .3rem;
 }
 .divy h3{
   height: 3rem;
