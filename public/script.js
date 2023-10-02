@@ -23,7 +23,11 @@ const fetchPeople = async () => {
             (x) => x.userId == Number(element.getAttribute('data-id'))
           );
           sessionStorage.setItem('name', name2[0].name);
-          sessionStorage.setItem('name', name2[0].age);
+          sessionStorage.setItem('ageDesc', name2[0].age);
+          sessionStorage.setItem('id', name2[0].userId);
+          sessionStorage.setItem('type', 'user');
+
+          window.location.href = '/edit.html';
           fetchPeople();
         } catch (error) {}
       });
