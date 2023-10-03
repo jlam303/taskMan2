@@ -33,11 +33,16 @@ const updatePeople = async (req, res) => {
     if (!answer2) {
       return express.json({ success: false, data: [] });
     }
-    const newPeople = await Person.findByIdAndUpdate(
-      { _id: answer2._id },
-      { name: name, age: age }
-    );
-    res.status(202).json({ data: newPeople, success: true });
+    if (age == -5) {
+      await Person.findByIdAndUpdate({ _id: answer2._id }, { assigned: name });
+    } else {
+      await Person.findByIdAndUpdate(
+        { _id: answer2._id },
+        { name: name, age: age }
+      );
+    }
+
+    res.status(202).json({ success: true });
   } catch (err) {
     console.log(err);
   }

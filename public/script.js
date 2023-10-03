@@ -5,6 +5,7 @@ const input = document.querySelector('.form-input');
 const input2 = document.querySelector('.form-input2');
 
 const btn = document.querySelector('.submit-btn');
+
 const dBtn = document.querySelector('.deleteBtn');
 
 let name2;
@@ -13,7 +14,7 @@ const fetchPeople = async () => {
   try {
     const data = await axios.get('/api/people');
     const people = data.data.map((person) => {
-      return `<div class="divy"><h5 class = "names"> ${person.name} </h5> <h3>Age: ${person.age}</h3><button class="edit" data-id="${person.userId}">Edit</button><button class="delete1" data-id="${person.userId}">Delete</button><p style="display:flex; text-align:center"></div>`;
+      return `<div class="divy div2"><h5 class = "names"> ${person.name} </h5> <h3>Age: ${person.age}</h3><button class="edit" data-id="${person.userId}">Edit</button><button class="delete1" data-id="${person.userId}">Delete</button><button class="assign" data-id="${person.userId}">Assign</button><p style="display:flex; text-align:center">Assigned Tasks: ${person.assigned}</div>`;
     });
     result.innerHTML = people.join('');
     const data2 = await axios.get('/api/tasks');
@@ -21,6 +22,37 @@ const fetchPeople = async () => {
       return `<div class="divy"><h5 class = "names"> ${person.name} </h5> <h3>Description: ${person.description}</h3><p style="display:flex; text-align:center">Done:<input type="checkbox" class="check" id="${person.taskId}" name="${person.taskId}" ></p></div>`;
     });
     result2.innerHTML = people2.join('');
+    const assign = document.querySelectorAll('.assign');
+    var tasked;
+    assign.forEach((element) => {
+      element.addEventListener('click', async (e) => {
+        try {
+          let task = prompt('Please put the task you want to assign', 'Task 1');
+          data2.data.map((person) => {
+            console.log(person.name);
+            if (person.name == task) {
+              taskAssign = async () => {
+                await axios.put(
+                  '/api/people/' + element.getAttribute('data-id'),
+                  {
+                    name: task,
+                    age: -5,
+                  }
+                );
+                tasked = true;
+              };
+            }
+          });
+          if (!tasked) {
+            alert('task doesnt exist');
+          }
+          tasked = false;
+          fetchPeople();
+        } catch (error) {
+          console.log(error);
+        }
+      });
+    });
     const edit = document.querySelectorAll('.edit');
     edit.forEach((element) => {
       element.addEventListener('click', async (e) => {

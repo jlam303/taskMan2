@@ -21,6 +21,9 @@
   padding: 2rem;
   box-shadow: rgba(0, 0, 0, 0.1) .3rem .3rem;
 }
+.div2{
+  height: 20rem;
+}
 .divy h3{
   height: 6rem;
   overflow: auto;

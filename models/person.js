@@ -17,8 +17,7 @@ const personSchema = new mongoose.Schema(
       required: true,
     },
     assigned: {
-      type: Array,
-      default: [],
+      type: String,
     },
   },
   { collection: 'people' }

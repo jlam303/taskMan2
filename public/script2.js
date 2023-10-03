@@ -80,7 +80,6 @@ btn.addEventListener('click', async (e) => {
 dBtn.addEventListener('click', async (e) => {
   try {
     await axios.delete('/api/tasks/-2');
-    console.log('h');
     fetchPeople();
   } catch (error) {
     formAlert.textContent = error;
