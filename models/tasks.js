@@ -4,7 +4,6 @@ const taskSchema = new mongoose.Schema(
   {
     taskId: {
       type: Number,
-      required: true,
     },
     name: {
       type: String,

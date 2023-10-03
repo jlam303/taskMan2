@@ -16,6 +16,10 @@ const personSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    assigned: {
+      type: Array,
+      default: [],
+    },
   },
   { collection: 'people' }
 );

@@ -3,6 +3,8 @@ require('dotenv').config();
 const app = express();
 
 const people = require('./controllers/people-controller');
+const tasks = require('./controllers/task-controller');
+
 // const tasks = require('./controllers/task-controller');
 
 const connectDB = require('./db/connect');
@@ -12,6 +14,8 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(express.json());
 app.use('/api/people', people);
+app.use('/api/tasks', tasks);
+
 // app.use('/api/tasks', tasks);
 
 const initServer = async () => {

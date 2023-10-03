@@ -1,16 +1,16 @@
-// const express = require('express');
-// const router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-// const {
-//   readPeople,
-//   createPeople,
-//   updatePeople,
-//   deletePerson,
-// } = require('./people.js');
+const {
+  readPeople,
+  createPeople,
+  updatePeople,
+  deletePerson,
+} = require('./tasks.js');
 
-// router.get('/', readPeople);
-// router.post('/', createPeople);
-// router.put('/:id', updatePeople);
-// router.delete('/:id', deletePerson);
+router.get('/', readPeople);
+router.post('/', createPeople);
+router.put('/:id', updatePeople);
+router.delete('/:id', deletePerson);
 
-// module.exports = router;
+module.exports = router;

@@ -18,6 +18,11 @@ btn.addEventListener('click', async (e) => {
       });
       window.location.href = '/javascript.html';
     } else if (sessionStorage.getItem('type') == 'task') {
+      await axios.put('/api/tasks/' + sessionStorage.getItem('id'), {
+        name: nameValue,
+        description: age,
+      });
+      window.location.href = '/index.html';
     }
   } catch (error) {
     console.log(error);

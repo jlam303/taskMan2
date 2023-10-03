@@ -1,4 +1,6 @@
-const result = document.querySelector('.result');
+const result = document.querySelector('.result1');
+const result2 = document.querySelector('.result2');
+
 const input = document.querySelector('.form-input');
 const input2 = document.querySelector('.form-input2');
 
@@ -10,9 +12,15 @@ const fetchPeople = async () => {
     const data = await axios.get('/api/people');
     console.log(data);
     const people = data.data.map((person) => {
-      return `<div class="divy"><h5 class = "names"> ${person.name} </h5> <h3>Age: ${person.age}</h3><button class="edit" data-id="${person.userId}">Edit</button><button class="delete1" data-id="${person.userId}">Delete</button><p style="display:flex; text-align:center">Done:<input type="checkbox" class="check" id="${person.userId}" name="${person.userId}" ></p></div>`;
+      return `<div class="divy"><h5 class = "names"> ${person.name} </h5> <h3>Age: ${person.age}</h3><button class="edit" data-id="${person.userId}">Edit</button><button class="delete1" data-id="${person.userId}">Delete</button><p style="display:flex; text-align:center"></div>`;
     });
     result.innerHTML = people.join('');
+    const data2 = await axios.get('/api/tasks');
+    console.log(data2);
+    const people2 = data2.data.map((person) => {
+      return `<div class="divy"><h5 class = "names"> ${person.name} </h5> <h3>Description: ${person.description}</h3><p style="display:flex; text-align:center">Done:<input type="checkbox" class="check" id="${person.taskId}" name="${person.taskId}" ></p></div>`;
+    });
+    result2.innerHTML = people2.join('');
     const edit = document.querySelectorAll('.edit');
     edit.forEach((element) => {
       element.addEventListener('click', async (e) => {
@@ -33,6 +41,8 @@ const fetchPeople = async () => {
       });
     });
     const done = document.querySelectorAll('.check');
+    console.log(document.querySelectorAll('.divy'));
+    console.log(done);
     done.forEach((element) => {
       element.addEventListener('click', async (e) => {
         try {
@@ -42,11 +52,12 @@ const fetchPeople = async () => {
               i < document.querySelectorAll('.divy').length;
               i++
             ) {
+              console.log(i);
               if (
                 document
                   .querySelectorAll('.divy')
-                  [i].children[4].children[0].getAttribute('id') ==
-                element.getAttribute('id')
+                  [i].children[2].children[0].getAttribute('id') ==
+                Number(element.getAttribute('id'))
               ) {
                 document.querySelectorAll('.divy')[i].classList.add('crossed');
               }
@@ -60,7 +71,7 @@ const fetchPeople = async () => {
               if (
                 document
                   .querySelectorAll('.divy')
-                  [i].children[4].children[0].getAttribute('id') ==
+                  [i].children[2].children[0].getAttribute('id') ==
                 element.getAttribute('id')
               ) {
                 document
