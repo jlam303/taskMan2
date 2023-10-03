@@ -1,3 +1,4 @@
+const tasks = require('../models/tasks');
 const Task = require('../models/tasks');
 const readPeople = async (req, res) => {
   // res.json({ success: true, data: people });
@@ -50,12 +51,15 @@ const updatePeople = async (req, res) => {
 const deletePerson = async (req, res) => {
   try {
     const { id } = req.params;
+    if (id == -2) {
+      await Task.deleteMany({});
+    }
     let answer = await Task.find({});
     const answer2 = answer.find((Task) => {
       return Task.taskId === Number(id);
     });
     if (!answer2) {
-      return express.json({ success: false, data: [] });
+      return res.json({ success: false, data: [] });
     }
     const newPeople = await Task.findByIdAndDelete({ _id: answer2._id });
     res.status(202).json({ data: newPeople, success: true });

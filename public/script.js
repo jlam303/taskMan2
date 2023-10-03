@@ -5,18 +5,18 @@ const input = document.querySelector('.form-input');
 const input2 = document.querySelector('.form-input2');
 
 const btn = document.querySelector('.submit-btn');
+const dBtn = document.querySelector('.deleteBtn');
+
 let name2;
 const formAlert = document.querySelector('.form-alert');
 const fetchPeople = async () => {
   try {
     const data = await axios.get('/api/people');
-    console.log(data);
     const people = data.data.map((person) => {
       return `<div class="divy"><h5 class = "names"> ${person.name} </h5> <h3>Age: ${person.age}</h3><button class="edit" data-id="${person.userId}">Edit</button><button class="delete1" data-id="${person.userId}">Delete</button><p style="display:flex; text-align:center"></div>`;
     });
     result.innerHTML = people.join('');
     const data2 = await axios.get('/api/tasks');
-    console.log(data2);
     const people2 = data2.data.map((person) => {
       return `<div class="divy"><h5 class = "names"> ${person.name} </h5> <h3>Description: ${person.description}</h3><p style="display:flex; text-align:center">Done:<input type="checkbox" class="check" id="${person.taskId}" name="${person.taskId}" ></p></div>`;
     });
@@ -41,14 +41,14 @@ const fetchPeople = async () => {
       });
     });
     const done = document.querySelectorAll('.check');
-    console.log(document.querySelectorAll('.divy'));
-    console.log(done);
+    console.log();
+    let doug = document.querySelectorAll('.divy').length - done.length;
     done.forEach((element) => {
       element.addEventListener('click', async (e) => {
         try {
           if (element.checked == true) {
             for (
-              let i = 0;
+              let i = doug;
               i < document.querySelectorAll('.divy').length;
               i++
             ) {
@@ -57,17 +57,18 @@ const fetchPeople = async () => {
                 document
                   .querySelectorAll('.divy')
                   [i].children[2].children[0].getAttribute('id') ==
-                Number(element.getAttribute('id'))
+                element.getAttribute('id')
               ) {
                 document.querySelectorAll('.divy')[i].classList.add('crossed');
               }
             }
           } else {
             for (
-              let i = 0;
+              let i = doug;
               i < document.querySelectorAll('.divy').length;
               i++
             ) {
+              console.log(i);
               if (
                 document
                   .querySelectorAll('.divy')
@@ -80,7 +81,9 @@ const fetchPeople = async () => {
               }
             }
           }
-        } catch (error) {}
+        } catch (error) {
+          console.log(error);
+        }
       });
     });
     const delete1 = document.querySelectorAll('.delete1');
@@ -118,6 +121,17 @@ btn.addEventListener('click', async (e) => {
     h6.textContent = person.age;
     result.appendChild(h6);
 
+    fetchPeople();
+  } catch (error) {
+    formAlert.textContent = error;
+  }
+  input.value = '';
+  input2.value = '';
+});
+dBtn.addEventListener('click', async (e) => {
+  try {
+    await axios.delete('/api/people/-2');
+    console.log('h');
     fetchPeople();
   } catch (error) {
     formAlert.textContent = error;

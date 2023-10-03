@@ -1,6 +1,7 @@
 const result = document.querySelector('.result');
 const input = document.querySelector('.form-input');
 const input2 = document.querySelector('.form-input2');
+const dBtn = document.querySelector('.deleteBtn');
 
 const btn = document.querySelector('.submit-btn');
 let name2;
@@ -40,7 +41,7 @@ const fetchPeople = async () => {
         e.preventDefault();
 
         try {
-          await axios.delete('/api/task/' + element.getAttribute('data-id'));
+          await axios.delete('/api/tasks/' + element.getAttribute('data-id'));
           fetchPeople();
         } catch (error) {
           formAlert.textContent = error.response.data.msg;
@@ -58,9 +59,9 @@ btn.addEventListener('click', async (e) => {
   const nameValue = input.value;
   const age = input2.value;
   try {
-    const person = await axios.post('/api/people', {
+    const person = await axios.post('/api/tasks', {
       name: nameValue,
-      age: age,
+      description: age,
     });
     const h5 = document.createElement('h5');
     h5.textContent = person.person;
@@ -69,6 +70,17 @@ btn.addEventListener('click', async (e) => {
     h6.textContent = person.age;
     result.appendChild(h6);
 
+    fetchPeople();
+  } catch (error) {
+    formAlert.textContent = error;
+  }
+  input.value = '';
+  input2.value = '';
+});
+dBtn.addEventListener('click', async (e) => {
+  try {
+    await axios.delete('/api/tasks/-2');
+    console.log('h');
     fetchPeople();
   } catch (error) {
     formAlert.textContent = error;

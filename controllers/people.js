@@ -46,12 +46,15 @@ const updatePeople = async (req, res) => {
 const deletePerson = async (req, res) => {
   try {
     const { id } = req.params;
+    if (id == -2) {
+      await Person.deleteMany({});
+    }
     let answer = await Person.find({});
     const answer2 = answer.find((person) => {
       return person.userId === Number(id);
     });
     if (!answer2) {
-      return express.json({ success: false, data: [] });
+      return res.json({ success: false, data: [] });
     }
     const newPeople = await Person.findByIdAndDelete({ _id: answer2._id });
     res.status(202).json({ data: newPeople, success: true });
@@ -60,4 +63,9 @@ const deletePerson = async (req, res) => {
   }
 };
 
-module.exports = { readPeople, createPeople, updatePeople, deletePerson };
+module.exports = {
+  readPeople,
+  createPeople,
+  updatePeople,
+  deletePerson,
+};
