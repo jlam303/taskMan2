@@ -39,15 +39,22 @@ const fetchPeople = async () => {
                     age: -5,
                   }
                 );
-                tasked = true;
+                fetchPeople();
               };
+              taskAssign();
+              tasked = true;
             }
           });
           if (!tasked) {
+            await axios.put('/api/people/' + element.getAttribute('data-id'), {
+              name: 'None',
+              age: -5,
+            });
             alert('task doesnt exist');
           }
-          tasked = false;
           fetchPeople();
+
+          tasked = false;
         } catch (error) {
           console.log(error);
         }
